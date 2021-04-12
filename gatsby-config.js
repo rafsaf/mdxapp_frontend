@@ -3,6 +3,19 @@ module.exports = {
     title: "mdxapp_frontend",
   },
   plugins: [
+    {
+      resolve: `gatsby-plugin-webfonts`,
+      options: {
+        fonts: {
+          google: [
+            {
+              family: "Inconsolata",
+              variants: ["300"],
+            },
+          ],
+        },
+      },
+    },
     "gatsby-plugin-styled-components",
     "gatsby-plugin-gatsby-cloud",
     "gatsby-plugin-image",
@@ -13,6 +26,10 @@ module.exports = {
       options: {
         icon: "src/images/icon.png",
       },
+    },
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/app/*`] },
     },
     "gatsby-plugin-mdx",
     "gatsby-plugin-sharp",
