@@ -12,8 +12,11 @@ import {
 } from "../../services/api/models/login.interface";
 import ApiLogin from "../../services/api/login";
 import { setToken } from "../../services/auth/token";
+import { useAPIError } from "../../services/hooks/useApiError";
+import { Spinner } from "../globals/Spinner";
 
 const ErrorMess = styled.div`
+  height: 1rem;
   color: ${setColor.mainWhite};
   margin-top: 0.5rem;
   font-size: x-large;
@@ -54,6 +57,7 @@ const StyledForm = styled.form`
 
 const LoginForm = () => {
   const [responseError, setResponseError] = useState<string | null>(null);
+  const { addError } = useAPIError();
 
   const formik = useFormik({
     initialValues: { username: "", password: "" },
@@ -62,14 +66,15 @@ const LoginForm = () => {
       password: Yup.string().max(128, "Must be 128 characters or less."),
     }),
     onSubmit: (values, { setSubmitting, resetForm }) => {
+      setResponseError("");
       if (values.username === "" || values.password === "") {
         setResponseError("Fields cannot be empty!");
         resetForm({});
         setSubmitting(false);
       } else {
         ApiLogin.post<Key, KeyError>(values, true).then(async (response) => {
-          if (response === null) {
-            // pass
+          if (typeof response === "string") {
+            addError(response);
           } else if (isKey(response)) {
             setToken(response.key);
             navigate("/apps");
@@ -106,8 +111,8 @@ const LoginForm = () => {
           {...formik.getFieldProps("password")}
         />
 
-        <Button big type="submit">
-          Log In
+        <Button disabled={formik.isSubmitting} width="10rem" big type="submit">
+          {formik.isSubmitting ? <Spinner /> : "Log in"}
         </Button>
         <ErrorMess>{responseError}</ErrorMess>
       </StyledForm>

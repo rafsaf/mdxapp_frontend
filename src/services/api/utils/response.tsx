@@ -1,4 +1,5 @@
 import { AxiosResponse, AxiosError } from "axios";
+import React from "react";
 
 export function handleResponse(response: AxiosResponse) {
   if (response.data) {
@@ -13,15 +14,9 @@ export function handleError(error: AxiosError) {
     return error.response.data;
   } else if (error.request) {
     // The request was made but no response was received
-    console.log(error.request);
-    alert("The request was made but no response was received");
-    return null;
+    return "The request was made but no response was received.";
   } else {
     // Something happened in setting up the request that triggered an Error
-    console.log("Error", error.message);
-    alert(
-      "Something happened in setting up the request that triggered an Error"
-    );
-    return null;
+    return "Something happened in setting up the request that triggered an Error.";
   }
 }

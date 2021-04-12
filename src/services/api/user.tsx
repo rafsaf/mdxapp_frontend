@@ -9,7 +9,7 @@ export const ApiUser = new ApiCore({
 
 export const setUser = async (): Promise<void> => {
   await ApiUser.get<User, UserError>().then((response) => {
-    if (response === null) {
+    if (typeof response === "string") {
       return;
     }
     if (isUser(response)) {

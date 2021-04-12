@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { setColor } from "../../styles";
 import { AiOutlineLogout } from "react-icons/ai";
+import { IoMdApps } from "react-icons/io";
 import { Link } from "gatsby";
 import { getUser } from "../../services/auth/user";
 import { logout } from "../../services/auth/logout";
@@ -17,13 +18,20 @@ const Nav = styled.nav`
 const NavCenter = styled.div`
   max-width: 1500px;
   display: flex;
+  margin: 0 auto;
   flex-wrap: wrap;
-  justify-content: flex-end;
   align-items: center;
-
+  font-size: 1.2rem;
+  article a {
+    color: ${setColor.mainWhite};
+  }
+  article a svg {
+    padding-top: 8px;
+    font-size: 1.6rem;
+  }
   div {
-    padding: 0 2rem;
-    font-size: 1.25rem;
+    margin-left: auto;
+    padding: 0 1rem;
   }
   button {
     cursor: pointer;
@@ -54,6 +62,11 @@ const Navbar = () => {
   return (
     <Nav>
       <NavCenter>
+        <article>
+          <Link to="/apps">
+            <IoMdApps /> Apps
+          </Link>
+        </article>
         <div>
           Logged as <Link to="/apps/profile">{username}</Link>
         </div>

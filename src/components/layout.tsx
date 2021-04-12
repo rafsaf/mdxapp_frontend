@@ -1,13 +1,13 @@
 import React from "react";
 import { Global } from "./globals/globalStyles";
 import styled from "styled-components";
-//import Navbar from "./globals/Navbar";
-//import Footer from "./globals/Footer";
 import { Helmet } from "react-helmet";
 import { navigate } from "gatsby";
 import isLoggedIn from "../services/auth/isLoggedIn";
 import Footer from "./globals/Footer";
 import Navbar from "./globals/Navbar";
+import GlobalErrors from "./globals/GlobalErrors";
+import { APIErrorProvider } from "./globals/ContextErrorProvider";
 
 const UnAuthorizedWrapper = styled.div`
   min-height: 85vh;
@@ -29,7 +29,10 @@ export const AuthorizedLayout: React.FC = ({ children }) => {
       </Helmet>
       <Global />
       <Navbar />
-      <AuthorizedWrapper>{children}</AuthorizedWrapper>
+      <APIErrorProvider>
+        <GlobalErrors />
+        <AuthorizedWrapper>{children}</AuthorizedWrapper>
+      </APIErrorProvider>
       <Footer />
     </main>
   );
@@ -42,7 +45,10 @@ export const UnAuthorizedLayout: React.FC = ({ children }) => {
         <meta charSet="utf-8" />
       </Helmet>
       <Global />
-      <UnAuthorizedWrapper>{children}</UnAuthorizedWrapper>
+      <APIErrorProvider>
+        <GlobalErrors />
+        <UnAuthorizedWrapper>{children}</UnAuthorizedWrapper>
+      </APIErrorProvider>
       <Footer />
     </main>
   );

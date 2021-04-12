@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { setColor, setFont } from "../../styles";
 import { Link } from "gatsby";
 
-const ButtonStyle = css<{ big?: boolean }>`
+const ButtonStyle = css<{ big?: boolean; width?: string }>`
   display: inline-block;
   text-transform: uppercase;
   background: ${setColor.primaryColor7};
@@ -10,6 +10,7 @@ const ButtonStyle = css<{ big?: boolean }>`
   font-size: 1.8rem;
   max-width: 340px;
   padding: ${(props) => (props.big ? "1rem 1rem" : "0.4rem 0.7rem")};
+  ${(props) => (props.width ? `width: ${props.width};` : "")};
   letter-spacing: 0.25rem;
   display: inline-block;
   font-weight: 500;

@@ -78,13 +78,13 @@ interface Options {
 }
 
 export default class ApiCore {
-  get: <T, E>(skipToken?: boolean) => Promise<T | E | null>;
-  getAll: <T, E>(skipToken?: boolean) => Promise<T | E | null>;
-  getSingle: <T, E>(id: string, skipToken?: boolean) => Promise<T | E | null>;
-  post: <T, E>(model: object, skipToken?: boolean) => Promise<T | E | null>;
-  put: <T, E>(model: object, skipToken?: boolean) => Promise<T | E | null>;
-  patch: <T, E>(model: object, skipToken?: boolean) => Promise<T | E | null>;
-  remove: <T, E>(id: string, skipToken?: boolean) => Promise<T | E | null>;
+  get: <T, E>(skipToken?: boolean) => Promise<T | E | string>;
+  getAll: <T, E>(skipToken?: boolean) => Promise<T | E | string>;
+  getSingle: <T, E>(id: string, skipToken?: boolean) => Promise<T | E | string>;
+  post: <T, E>(model: object, skipToken?: boolean) => Promise<T | E | string>;
+  put: <T, E>(model: object, skipToken?: boolean) => Promise<T | E | string>;
+  patch: <T, E>(model: object, skipToken?: boolean) => Promise<T | E | string>;
+  remove: <T, E>(id: string, skipToken?: boolean) => Promise<T | E | string>;
 
   constructor(options: Options) {
     this.get = (skipToken = false) => {
