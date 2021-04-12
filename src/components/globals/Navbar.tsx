@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { setColor, setFont } from "../../styles";
+import { setColor } from "../../styles";
 import { AiOutlineLogout } from "react-icons/ai";
-import { Link, navigate } from "gatsby";
-import ApiLogout from "../../services/api/logout";
+import { Link } from "gatsby";
+import { getUser } from "../../services/auth/user";
+import { logout } from "../../services/auth/logout";
 
 const Nav = styled.nav`
   background: ${setColor.mainGrey};
@@ -40,22 +41,15 @@ const NavCenter = styled.div`
 const Navbar = () => {
   const [username, setUsername] = React.useState<string>("...");
   const fillUsername = () => {
-    setTimeout(() => {
-      const username = localStorage.getItem("username");
-      if (username) {
-        setUsername(username);
+    getUser().then((user) => {
+      if (user !== null) {
+        setUsername(user.username);
       }
-    }, 25);
+    });
   };
   React.useEffect(() => {
     fillUsername();
   }, []);
-
-  const logOut = () => {
-    ApiLogout.post({}, true).then((response) => {
-      navigate("/");
-    });
-  };
 
   return (
     <Nav>
@@ -63,7 +57,7 @@ const Navbar = () => {
         <div>
           Logged as <Link to="/apps/profile">{username}</Link>
         </div>
-        <button onClick={logOut}>
+        <button onClick={logout}>
           <AiOutlineLogout />
         </button>
       </NavCenter>

@@ -9,6 +9,10 @@ export const removeToken = (): void => {
   localStorage.removeItem(ITEM_NAME);
 };
 
+export const setToken = (token: string): void => {
+  localStorage.setItem(ITEM_NAME, token);
+};
+
 export const tokenHeader = (): string | null => {
   const token = getToken();
   if (token) {

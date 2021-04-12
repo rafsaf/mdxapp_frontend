@@ -1,9 +1,7 @@
 import ApiCore from "./utils/provider";
 
-const url = "users/profiles";
+const url = "users/profile";
 
-const ApiProfiles = new ApiCore({
+export const ApiProfiles = new ApiCore({
   url: url,
 });
-
-export default ApiProfiles;

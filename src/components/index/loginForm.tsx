@@ -4,9 +4,14 @@ import * as Yup from "yup";
 import styled from "styled-components";
 import { Button } from "../globals/Button";
 import { setColor } from "../../styles";
-import ApiLogin from "../../services/api/loging";
 import { navigate } from "gatsby";
-import ApiUser from "../../services/api/user";
+import {
+  isKey,
+  Key,
+  KeyError,
+} from "../../services/api/models/login.interface";
+import ApiLogin from "../../services/api/login";
+import { setToken } from "../../services/auth/token";
 
 const ErrorMess = styled.div`
   color: ${setColor.mainWhite};
@@ -48,14 +53,8 @@ const StyledForm = styled.form`
 `;
 
 const LoginForm = () => {
-  const getProfiles = async () => {
-    ApiUser.getAll().then((result) => {
-      if (result.username) {
-        localStorage.setItem("username", result.username);
-      }
-    });
-  };
   const [responseError, setResponseError] = useState<string | null>(null);
+
   const formik = useFormik({
     initialValues: { username: "", password: "" },
     validationSchema: Yup.object({
@@ -68,16 +67,21 @@ const LoginForm = () => {
         resetForm({});
         setSubmitting(false);
       } else {
-        ApiLogin.post(values, true).then(async (response) => {
-          if (response.key) {
-            localStorage.setItem("authToken", response.key);
-            await getProfiles();
+        ApiLogin.post<Key, KeyError>(values, true).then(async (response) => {
+          if (response === null) {
+            // pass
+          } else if (isKey(response)) {
+            setToken(response.key);
             navigate("/apps");
           } else {
-            if (response.data.non_field_errors) {
-              setResponseError(response.data.non_field_errors);
-            } else if (response.data.password) {
-              setResponseError("Fields cannot be empty.");
+            if (response.username) {
+              setResponseError(response.username);
+            } else if (response.password) {
+              setResponseError(response.password);
+            } else if (response.non_field_errors) {
+              setResponseError(response.non_field_errors);
+            } else {
+              setResponseError("Connection error.");
             }
           }
           resetForm({});

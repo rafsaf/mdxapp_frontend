@@ -1,11 +1,11 @@
 import axios from "axios";
-import { getToken } from "../../auth/token";
+import { tokenHeader } from "../../auth/token";
 import { handleResponse, handleError } from "./response";
 
 const BASE_URL = "http://localhost:8000";
 
 const getConfig = (skipToken = false) => {
-  const token = getToken();
+  const token = tokenHeader();
   let headers: object = {};
   if (token && !skipToken) {
     headers = {

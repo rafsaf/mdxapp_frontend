@@ -1,19 +1,25 @@
-import { AuthUser, setUser } from "../api/user";
+import { User } from "../api/models/user.interface";
+import { setUser } from "../api/user";
 import isLoggedIn from "./isLoggedIn";
 
-const ITEM_NAME = "authUser";
+export const ITEM_NAME = "authUser";
 
-export const getUser = async (): Promise<AuthUser | null> => {
+export const getUser = async (): Promise<User | null> => {
   let userItem = localStorage.getItem(ITEM_NAME);
+  let user: User | null = null;
+
   if (userItem === null && isLoggedIn()) {
-    await setUser();
+    await setUser().then(() => {
+      userItem = localStorage.getItem(ITEM_NAME);
+      if (userItem) {
+        user = JSON.parse(userItem);
+      }
+    });
   }
-  userItem = localStorage.getItem(ITEM_NAME);
   if (userItem) {
-    const user: AuthUser = JSON.parse(userItem);
-    return user;
+    user = JSON.parse(userItem);
   }
-  return null;
+  return user;
 };
 
 export const removeUser = (): void => {

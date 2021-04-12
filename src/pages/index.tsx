@@ -1,6 +1,5 @@
 import React from "react";
-import Login from "../components/index/login";
-import ApiProfiles from "../services/api/profiles";
+import Login from "../components/index/loginForm";
 import { UnAuthorizedLayout } from "../components/layout";
 import styled from "styled-components";
 import { setColor, setFont } from "../styles";
